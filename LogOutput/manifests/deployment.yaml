@@ -12,7 +12,31 @@ spec:
       labels:
         app: logoutput
     spec:
+      volumes:
+        - name: shared-data
+          emptyDir: {}
       containers:
-        - name: logoutput
-          image: logoutput
+        - name: writer
+          image: writer
           imagePullPolicy: Never
+          ports:
+           - containerPort: 8081
+          env:
+           - name: TS_PATH
+             value: "/opt/data/timestamp.data"
+           - name: PORT
+             value: "8081"
+          volumeMounts:
+          - name: shared-data
+            mountPath: /opt/data
+        - name: reader
+          image: reader
+          imagePullPolicy: Never
+          ports:
+           - containerPort: 8080
+          env:
+           - name: TS_PATH
+             value: "/opt/data/timestamp.data"
+          volumeMounts:
+          - name: shared-data
+            mountPath: /opt/data

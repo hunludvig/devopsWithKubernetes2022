@@ -1,0 +1,10 @@
+micronaut:
+  application:
+    name: writer
+    timestamp-path: ${TS_PATH:timestamp.data}
+  server:
+    port: ${PORT:8080}
+netty:
+  default:
+    allocator:
+      max-order: 3

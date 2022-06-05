@@ -1,6 +1,7 @@
 micronaut:
   application:
-    name: logOutput
+    name: reader
+    timestamp-path: ${TS_PATH:timestamp.data}
   server:
     port: ${PORT:8080}
 netty:
