@@ -12,9 +12,19 @@ public class StatusController {
     @Inject
     private StatusStore status;
 
-    @Get(produces = MediaType.APPLICATION_JSON)
-    public Status currentStatus() throws IOException {
+    @Inject
+    private PongStore pongs;
+
+    @Get(produces = MediaType.TEXT_PLAIN)
+    public String currentStatus() throws IOException {
         status.update();
-        return status.currentStatus();
+        pongs.update();
+        var s = status.currentStatus();
+        var c = pongs.currentCounter();
+        return String.format(
+                """
+                %s: %s.
+                Ping / Pongs: %s
+                """, s.getCreatedAt(), s.getToken(), c);
     }
 }

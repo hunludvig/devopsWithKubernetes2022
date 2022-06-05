@@ -1,6 +1,7 @@
 micronaut:
   application:
     name: pingPong
+    pingpong-path: ${PINGPONG_PATH:pingpong.data}
   server:
     port: ${PORT:8080}
 netty:

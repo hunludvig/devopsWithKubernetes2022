@@ -13,8 +13,11 @@ spec:
         app: logoutput
     spec:
       volumes:
-        - name: shared-data
+        - name: timestamp-data
           emptyDir: {}
+        - name: pingpong-data
+          persistentVolumeClaim:
+            claimName: pingpong-data-claim
       containers:
         - name: writer
           image: writer
@@ -27,7 +30,7 @@ spec:
            - name: PORT
              value: "8081"
           volumeMounts:
-          - name: shared-data
+          - name: timestamp-data
             mountPath: /opt/data
         - name: reader
           image: reader
@@ -36,7 +39,11 @@ spec:
            - containerPort: 8080
           env:
            - name: TS_PATH
-             value: "/opt/data/timestamp.data"
+             value: "/opt/tsdata/timestamp.data"
+           - name: PINGPONG_PATH
+             value: "/opt/pingpongdata/pingpong.data"
           volumeMounts:
-          - name: shared-data
-            mountPath: /opt/data
+          - name: timestamp-data
+            mountPath: /opt/tsdata
+          - name: pingpong-data
+            mountPath: /opt/pingpongdata
