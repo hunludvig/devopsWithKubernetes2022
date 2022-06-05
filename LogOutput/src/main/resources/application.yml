@@ -1,6 +1,8 @@
 micronaut:
   application:
     name: logOutput
+  server:
+    port: ${PORT:8080}
 netty:
   default:
     allocator:

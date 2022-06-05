@@ -9,4 +9,7 @@ FROM amazoncorretto:17
 
 COPY --from=builder /usr/src/app/target/LogOutput-*.jar /usr/app/LogOutput.jar
 
+ARG PORT=8080
+ENV PORT=${PORT}
+
 ENTRYPOINT ["java", "-cp", "/usr/app/LogOutput.jar", "com.hunludvig.Application"]
