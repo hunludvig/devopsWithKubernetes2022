@@ -15,7 +15,7 @@ spec:
       volumes:
         - name: pingpong-data
           persistentVolumeClaim:
-            claimName: pingpong-data-claim
+            claimName: course-part1-claim
       containers:
         - name: pingpong
           image: pingpong

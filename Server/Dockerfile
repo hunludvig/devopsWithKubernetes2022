@@ -12,4 +12,7 @@ COPY --from=builder /usr/src/app/target/Server-*.jar /usr/app/Server.jar
 ARG PORT=8080
 ENV PORT=${PORT}
 
+ARG PICTURE_CACHE=/tmp
+ENV PICTURE_CACHE=${PICTURE_CACHE}
+
 ENTRYPOINT ["java", "-cp", "/usr/app/Server.jar", "com.hunludvig.Application"]

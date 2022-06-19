@@ -12,7 +12,17 @@ spec:
       labels:
         app: server
     spec:
+      volumes:
+        - name: pictures-data
+          persistentVolumeClaim:
+            claimName: course-part1-claim
       containers:
         - name: server
           image: server
           imagePullPolicy: Never
+          env:
+           - name: PICTURE_CACHE
+             value: "/opt/data"
+          volumeMounts:
+          - name: pictures-data
+            mountPath: /opt/data
