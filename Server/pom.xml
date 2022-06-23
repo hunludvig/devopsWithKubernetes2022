@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.hunludvig</groupId>
   <artifactId>Server</artifactId>
-  <version>0.6</version>
+  <version>0.7</version>
   <packaging>${packaging}</packaging>
 
   <parent>
@@ -68,6 +68,11 @@
     <dependency>
       <groupId>io.micronaut</groupId>
       <artifactId>micronaut-jackson-databind</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.micronaut.views</groupId>
+      <artifactId>micronaut-views-thymeleaf</artifactId>
       <scope>compile</scope>
     </dependency>
     <dependency>
