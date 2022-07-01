@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import java.util.Date;
 
 @Singleton
-public class StatusStore {
+public class StatusStore implements Store {
 
     @Value("${micronaut.application.timestamp-path}")
     private String path;
@@ -25,6 +25,7 @@ public class StatusStore {
         return status;
     }
 
+    @Override
     public void update() throws IOException {
         var timestamp = new Date(Long.valueOf(Files.readString(Paths.get(path))));
         if(!status.getCreatedAt().equals(timestamp)) {

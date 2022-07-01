@@ -2,6 +2,7 @@ micronaut:
   application:
     name: reader
     timestamp-path: ${TS_PATH:timestamp.data}
+    config-path: ${CONFIG_PATH:config.properties}
     pong-service: ${PONG_SERVICE:http://localhost:8081/pongs}
   server:
     port: ${PORT:8080}

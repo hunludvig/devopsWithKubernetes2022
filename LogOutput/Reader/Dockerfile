@@ -15,6 +15,9 @@ ENV PORT=${PORT}
 ARG TS_PATH=/timestamp.data
 ENV TS_PATH=${TS_PATH}
 
+ARG CONFIG_PATH=/config.properties
+ENV CONFIG_PATH=${CONFIG_PATH}
+
 ARG PONG_SERVICE=http://pingpong-svc/pongs
 ENV PONG_SERVICE=${PONG_SERVICE}
 

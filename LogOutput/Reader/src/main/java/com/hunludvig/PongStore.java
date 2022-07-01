@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 @Singleton
-public class PongStore {
+public class PongStore implements Store {
 
     @Inject
     private PongFetcher fetcher;
@@ -17,6 +17,7 @@ public class PongStore {
         return pongCounter;
     }
 
+    @Override
     public void update() throws IOException {
         pongCounter = new BigDecimal(fetcher.fetchPongs());
     }
