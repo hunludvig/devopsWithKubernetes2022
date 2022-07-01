@@ -12,17 +12,7 @@ spec:
       labels:
         app: pingpong
     spec:
-      volumes:
-        - name: pingpong-data
-          persistentVolumeClaim:
-            claimName: course-part1-claim
       containers:
         - name: pingpong
           image: pingpong
           imagePullPolicy: Never
-          env:
-           - name: PINGPONG_PATH
-             value: "/opt/data/pingpong.data"
-          volumeMounts:
-          - name: pingpong-data
-            mountPath: /opt/data

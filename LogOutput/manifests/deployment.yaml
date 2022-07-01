@@ -15,9 +15,6 @@ spec:
       volumes:
         - name: timestamp-data
           emptyDir: {}
-        - name: pingpong-data
-          persistentVolumeClaim:
-            claimName: course-part1-claim
       containers:
         - name: writer
           image: writer
@@ -30,8 +27,8 @@ spec:
            - name: PORT
              value: "8081"
           volumeMounts:
-          - name: timestamp-data
-            mountPath: /opt/data
+           - name: timestamp-data
+             mountPath: /opt/data
         - name: reader
           image: reader
           imagePullPolicy: Never
@@ -40,10 +37,8 @@ spec:
           env:
            - name: TS_PATH
              value: "/opt/tsdata/timestamp.data"
-           - name: PINGPONG_PATH
-             value: "/opt/pingpongdata/pingpong.data"
+           - name: PONG_SERVICE
+             value: "http://pingpong-svc/pongs"
           volumeMounts:
-          - name: timestamp-data
-            mountPath: /opt/tsdata
-          - name: pingpong-data
-            mountPath: /opt/pingpongdata
+           - name: timestamp-data
+             mountPath: /opt/tsdata

@@ -3,6 +3,8 @@ package com.hunludvig;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.micronaut.scheduling.TaskExecutors;
+import io.micronaut.scheduling.annotation.ExecuteOn;
 import jakarta.inject.Inject;
 import java.io.IOException;
 
@@ -16,6 +18,7 @@ public class StatusController {
     private PongStore pongs;
 
     @Get(produces = MediaType.TEXT_PLAIN)
+    @ExecuteOn(TaskExecutors.IO)
     public String currentStatus() throws IOException {
         status.update();
         pongs.update();

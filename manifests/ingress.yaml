@@ -12,7 +12,14 @@ spec:
           service:
             name: pingpong-svc
             port:
-              number: 2345
+              number: 80
+      - path: /pongs
+        pathType: Prefix
+        backend:
+          service:
+            name: pingpong-svc
+            port:
+              number: 80
       - path: /
         pathType: Prefix
         backend:

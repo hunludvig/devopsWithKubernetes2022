@@ -2,7 +2,7 @@ micronaut:
   application:
     name: reader
     timestamp-path: ${TS_PATH:timestamp.data}
-    pingpong-path: ${PINGPONG_PATH:pingpong.data}
+    pong-service: ${PONG_SERVICE:http://localhost:8081/pongs}
   server:
     port: ${PORT:8080}
 netty:
