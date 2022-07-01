@@ -1,0 +1,28 @@
+micronaut:
+  application:
+    name: pingPong
+  server:
+    port: ${PORT:8080}
+netty:
+  default:
+    allocator:
+      max-order: 3
+datasources:
+  default:
+    url: ${DB_URL:`jdbc:postgresql://localhost/test`}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:hello}
+    driverClassName:  org.postgresql.Driver
+jpa:
+  default:
+    packages-to-scan:
+      - 'com.hunludvig'
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: none
+        show_sql: true
+flyway:
+  datasources:
+    default:
+      enabled: true

@@ -10,20 +10,20 @@ import jakarta.inject.Inject;
 public class PongController {
 
     @Inject
-    private RequestCounter counter;
+    private PongRepository pongs;
 
     @Get("pingpong")
     @Produces(MediaType.TEXT_PLAIN)
     public String pong() {
-        var value = counter.currentValue();
-        counter.increment();
+        var value = pongs.currentValue();
+        pongs.increment();
         return String.format("pong %s", value);
     }
 
     @Get("pongs")
     @Produces(MediaType.TEXT_PLAIN)
     public String pongsCounter() {
-        var value = counter.currentValue();
-        return value.toString();
+        var value = pongs.currentValue();
+        return String.valueOf(value);
     }
 }

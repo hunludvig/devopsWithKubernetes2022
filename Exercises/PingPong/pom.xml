@@ -18,6 +18,7 @@
     <jdk.version>17</jdk.version>
     <release.version>17</release.version>
     <micronaut.version>3.5.1</micronaut.version>
+    <micronaut.data.version>3.4.2</micronaut.data.version>
     <micronaut.runtime>netty</micronaut.runtime>
     <exec.mainClass>com.hunludvig.Application</exec.mainClass>
   </properties>
@@ -71,9 +72,28 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
+        <groupId>io.micronaut.data</groupId>
+        <artifactId>micronaut-data-hibernate-jpa</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>io.micronaut.flyway</groupId>
+        <artifactId>micronaut-flyway</artifactId>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>io.micronaut.sql</groupId>
+        <artifactId>micronaut-jdbc-hikari</artifactId>
+        <scope>compile</scope>
+    </dependency>
+    <dependency>
       <groupId>jakarta.annotation</groupId>
       <artifactId>jakarta.annotation-api</artifactId>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -100,6 +120,16 @@
             <path>
               <groupId>io.micronaut</groupId>
               <artifactId>micronaut-http-validation</artifactId>
+              <version>${micronaut.version}</version>
+            </path>
+            <path>
+              <groupId>io.micronaut.data</groupId>
+              <artifactId>micronaut-data-processor</artifactId>
+              <version>${micronaut.data.version}</version>
+            </path>
+            <path>
+              <groupId>io.micronaut</groupId>
+              <artifactId>micronaut-validation</artifactId>
               <version>${micronaut.version}</version>
             </path>
           </annotationProcessorPaths>
