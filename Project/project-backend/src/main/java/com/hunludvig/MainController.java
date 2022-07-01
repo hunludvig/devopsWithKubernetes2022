@@ -24,7 +24,7 @@ public class MainController {
 
     @Get("todos")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<TodoDto> fetchTodos() throws URISyntaxException {
+    public Collection<TodoDto> fetchTodos() {
         return todos.findAll().stream()
                 .map(t -> new TodoDto(t.getId().longValue(), t.getContent()))
                 .collect(Collectors.toList());
@@ -33,12 +33,17 @@ public class MainController {
     @Post("todos")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<TodoDto> addTodo(@RequestAttribute("content") final String content) throws URISyntaxException {
-        LOG.info("Todo added with content {}", content);
-        var todo = new Todo();
-        todo.setContent(content);
-        todo.setCreatedAt(ZonedDateTime.now());
-        todos.save(todo);
-        return fetchTodos();
+    public Collection<TodoDto> addTodo(@RequestAttribute("content") final String content)  {
+        try {
+            var todo = new Todo();
+            todo.setContent(content);
+            todo.setCreatedAt(ZonedDateTime.now());
+            todos.save(todo);
+            LOG.info("Todo added with content {}", content);
+            return fetchTodos();
+        } catch(RuntimeException e) {
+            LOG.error("Failed to add todo of content {}", content, e);
+            throw e;
+        }
     }
 }
