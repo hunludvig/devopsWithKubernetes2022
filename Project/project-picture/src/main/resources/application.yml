@@ -1,0 +1,12 @@
+micronaut:
+  application:
+    name: project-picture
+    picture:
+      source: https://picsum.photos/1200
+      cache: ${PICTURE_CACHE:.}
+  server:
+    port: ${PORT:8080}
+netty:
+  default:
+    allocator:
+      max-order: 3

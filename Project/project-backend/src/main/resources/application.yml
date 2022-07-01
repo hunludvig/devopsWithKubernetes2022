@@ -1,9 +1,6 @@
 micronaut:
   application:
-    name: server
-    picture:
-      source: https://picsum.photos/1200
-      cache: ${PICTURE_CACHE:.}
+    name: project-backend
   server:
     port: ${PORT:8080}
 netty:

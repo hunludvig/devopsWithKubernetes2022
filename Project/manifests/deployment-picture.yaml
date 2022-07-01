@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: server
+  name: project-picture
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: server
+      app: project-picture
   template:
     metadata:
       labels:
-        app: server
+        app: project-picture
     spec:
       volumes:
         - name: pictures-data
           persistentVolumeClaim:
             claimName: course-part1-claim
       containers:
-        - name: server
-          image: server
+        - name: project-picture
+          image: project-picture
           imagePullPolicy: Never
           env:
            - name: PICTURE_CACHE

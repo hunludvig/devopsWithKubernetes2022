@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: server-svc
+  name: project-picture-svc
 spec:
   type: ClusterIP
   selector:
-    app: server
+    app: project-picture
   ports:
-    - port: 2345
+    - port: 80
       protocol: TCP
       targetPort: 8080

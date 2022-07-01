@@ -7,7 +7,7 @@ RUN mvn -f /usr/src/app/pom.xml clean package
 
 FROM amazoncorretto:17
 
-COPY --from=builder /usr/src/app/target/Server-*.jar /usr/app/Server.jar
+COPY --from=builder /usr/src/app/target/project-picture-*.jar /usr/app/project-picture.jar
 
 ARG PORT=8080
 ENV PORT=${PORT}
@@ -15,4 +15,4 @@ ENV PORT=${PORT}
 ARG PICTURE_CACHE=/tmp
 ENV PICTURE_CACHE=${PICTURE_CACHE}
 
-ENTRYPOINT ["java", "-cp", "/usr/app/Server.jar", "com.hunludvig.Application"]
+ENTRYPOINT ["java", "-cp", "/usr/app/project-picture.jar", "com.hunludvig.Application"]

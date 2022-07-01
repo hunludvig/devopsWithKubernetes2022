@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Title</title>
+        <meta charset="utf-8" />
+        <script type = "text/javascript">
+            function displayTodos(todos) {
+                const ul = document.getElementById("todos");
+                while (ul.lastChild) {
+                    ul.removeChild(ul.lastChild);
+                }
+                for (let todo of todos) {
+                    let li = document.createElement("li");
+                    li.appendChild(document.createTextNode(todo.content));
+                    ul.appendChild(li);
+                }
+            }
+            function loadTodos() {
+                fetch("/todos", { method: "GET" })
+                .then(response => response.json())
+                .then(displayTodos);
+            }
+            function addTodo(e) {
+                const form = e.target;
+                fetch("/todos", {
+                    method: "POST",
+                    body: new URLSearchParams(new FormData(form)),
+                })
+                .then(response => response.json())
+                .then(displayTodos);
+                e.preventDefault();
+            }
+            window.onload = () => {
+                loadTodos();
+                document.getElementById("addForm").addEventListener("submit", addTodo, true);
+            }
+        </script>
+    </head>
+    <body>
+        <img src="/picture" alt="Picture of the day" width="400" height="400"/>
+        <form id="addForm">
+            <input type="text" name="content" maxlength="140" />
+            <input type="submit" value="Create TODO" />
+        </form>
+        <ul id="todos" />
+    </body>
+</html>

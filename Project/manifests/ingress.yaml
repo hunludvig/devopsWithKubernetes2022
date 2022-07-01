@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: project-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /picture
+        pathType: Prefix
+        backend:
+          service:
+            name: project-picture-svc
+            port:
+              number: 80
+      - path: /todos
+        pathType: Prefix
+        backend:
+          service:
+            name: project-backend-svc
+            port:
+              number: 80
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: project-frontend-svc
+            port:
+              number: 80
