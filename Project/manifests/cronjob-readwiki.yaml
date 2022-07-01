@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: readwiki
+  namespace: project
+spec:
+  schedule: "@daily"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: readwiki
+            image: project-readwiki
+            imagePullPolicy: Never
+            env:
+            - name: TODOS
+              value: "http://project-backend-svc/todos"
+          restartPolicy: Never
