@@ -17,3 +17,12 @@ spec:
         - name: project-backend
           image: project-backend
           imagePullPolicy: Never
+          envFrom:
+            - configMapRef:
+                name: db-config
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: project-secrets
+                  key: POSTGRES_PASSWORD

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-config
+  namespace: project
+data:
+  DB_URL: jdbc:postgresql://postgres/project
+  DB_USER: postgres
