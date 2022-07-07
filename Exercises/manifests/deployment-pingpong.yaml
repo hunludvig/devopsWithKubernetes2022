@@ -15,8 +15,7 @@ spec:
     spec:
       containers:
         - name: pingpong
-          image: pingpong
-          imagePullPolicy: Never
+          image: gcr.io/ascendant-ridge-355314/pingpong
           env:
             - name: DB_URL
               value: jdbc:postgresql://postgres/logoutput
