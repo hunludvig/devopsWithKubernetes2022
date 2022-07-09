@@ -1,8 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: project-picture-svc
-  namespace: project
+  name: picture-svc
 spec:
   type: ClusterIP
   selector:

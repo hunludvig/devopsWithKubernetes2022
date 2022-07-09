@@ -21,4 +21,9 @@ public class MainController {
     public byte[] picOfTheDay() throws IOException {
         return pictures.pictureOfTheDay();
     }
+
+    @Get
+    public String imOkay() {
+        return "I'm a lumberjack and I'm okay!";
+    }
 }

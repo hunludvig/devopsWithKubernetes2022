@@ -1,0 +1,73 @@
+name: Release application
+
+on:
+  push:
+
+env:
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  GKE_CLUSTER: dwk-cluster
+  GKE_ZONE: europe-north1-b
+  NAMESPACE: project
+
+jobs:
+  build-publish-deploy:
+    name: Build, Publish and Deploy
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install Age
+        run: sudo apt-get -y install age
+      - name: Sops Binary Installer
+        uses: mdgreenwald/mozilla-sops-action@v1.2.0
+        with:
+          version: v3.7.3
+      - name: Extract Secrets
+        run: |-
+            mkdir -p ~/.config/sops/age
+            echo "${{ secrets.AGE_PRIVATE_KEY }}" > ~/.config/sops/age/keys.txt
+            sops --decrypt Project/manifests/secret.enc.yaml > Project/manifests/secret.yaml
+            ls -lh Project/manifests/secret.yaml
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GKE_PROJECT }}
+          service_account_key: ${{ secrets.GKE_SA_KEY }}
+          export_default_credentials: true
+      - run: gcloud --quiet auth configure-docker
+      - id: build-backend
+        name: Build & Publish Backend
+        uses: ./.github/actions/build-publish
+        with:
+          image: project-backend
+          directory: Project/project-backend
+      - name: Build & Publish Picture
+        uses: ./.github/actions/build-publish
+        with:
+          image: project-picture
+          directory: Project/project-picture
+      - name: Build & Publish Frontend
+        uses: ./.github/actions/build-publish
+        with:
+          image: project-frontend
+          directory: Project/project-frontend
+      - name: Build & Publish Readwiki
+        uses: ./.github/actions/build-publish
+        with:
+          image: project-readwiki
+          directory: Project/project-readwiki
+      - run: gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
+      - name: Create Namespace
+        run: kubectl apply -f Project/manifests/namespace.yaml
+      - name: Set up Kustomize
+        uses: imranismail/setup-kustomize@v1
+      - name: Deploy
+        env:
+          TAG: ${{ steps.build-backend.outputs.tag }}
+        run: |-
+            kustomize build Project-GKE | envsubst | kubectl apply -f -
+            kubectl --namespace ${NAMESPACE} get deploy --output name | \
+              timeout 5m \
+              xargs -n1 -t \
+              kubectl  --namespace ${NAMESPACE} rollout status
+            kubectl --namespace ${NAMESPACE} get services -o wide

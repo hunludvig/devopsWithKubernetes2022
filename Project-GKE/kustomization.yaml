@@ -1,0 +1,36 @@
+bases:
+  - ../Project
+images:
+  - name: project-picture
+    newName: gcr.io/$PROJECT_ID/project-picture
+    newTag: $TAG
+  - name: project-backend
+    newName: gcr.io/$PROJECT_ID/project-backend
+    newTag: $TAG
+  - name: project-frontend
+    newName: gcr.io/$PROJECT_ID/project-frontend
+    newTag: $TAG
+  - name: project-readwiki
+    newName: gcr.io/$PROJECT_ID/project-readwiki
+    newTag: $TAG
+patches:
+ - target:
+     kind: PersistentVolumeClaim
+   patch: |-
+     - op: remove
+       path: /spec/storageClassName
+ - target:
+     kind: StatefulSet
+   patch: |-
+     - op: remove
+       path: /spec/volumeClaimTemplates/0/spec/storageClassName
+ - target:
+     kind: Deployment
+   patch: |-
+     - op: remove
+       path: /spec/template/spec/containers/0/imagePullPolicy
+ - target:
+     kind: CronJob
+   patch: |-
+     - op: remove
+       path: /spec/jobTemplate/spec/template/spec/containers/0/imagePullPolicy

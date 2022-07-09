@@ -1,13 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: project-picture
-  namespace: project
+  name: picture
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: project-picture
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -16,7 +17,7 @@ spec:
       volumes:
         - name: pictures-data
           persistentVolumeClaim:
-            claimName: course-part1-claim
+            claimName: picture-claim
       containers:
         - name: project-picture
           image: project-picture

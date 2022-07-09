@@ -1,0 +1,30 @@
+name: 'build-publish'
+description: 'Builds an image and publishes it to GCR'
+inputs:
+  image:
+    description: "image name to use"
+    required: true
+  directory:
+    description: "location of project files"
+    required: true
+outputs:
+  tag:
+    description: "Docker image tag"
+    value: ${{ steps.set-tag.outputs.tag }}
+runs:
+  using: "composite"
+  steps:
+  - id: set-tag
+    shell: bash
+    run: |-
+          echo "::set-output name=tag::${GITHUB_REF#refs/heads/}-${GITHUB_SHA}"
+  - name: Build
+    shell: bash
+    run: |-
+          docker build \
+             --tag "gcr.io/${PROJECT_ID}/${{ inputs.image }}:${GITHUB_REF#refs/heads/}-${GITHUB_SHA}" \
+             ${{ inputs.directory }}
+  - name: Publish
+    shell: bash
+    run: |-
+          docker push "gcr.io/${PROJECT_ID}/${{ inputs.image }}:${GITHUB_REF#refs/heads/}-${GITHUB_SHA}"

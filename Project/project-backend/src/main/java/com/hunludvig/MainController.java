@@ -8,7 +8,6 @@ import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Produces;
 import io.micronaut.http.annotation.RequestAttribute;
 import jakarta.inject.Inject;
-import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -45,5 +44,10 @@ public class MainController {
             LOG.error("Failed to add todo of content {}", content, e);
             throw e;
         }
+    }
+
+    @Get
+    public String imOkay() {
+        return "I'm a lumberjack and I'm okay!";
     }
 }
