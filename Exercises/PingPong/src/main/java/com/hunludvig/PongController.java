@@ -26,4 +26,9 @@ public class PongController {
         var value = pongs.currentValue();
         return String.valueOf(value);
     }
+
+    @Get
+    public String imOkay() {
+        return "I'm a lumberjack and I'm okay!";
+    }
 }
