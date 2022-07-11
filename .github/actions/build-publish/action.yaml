@@ -15,16 +15,37 @@ runs:
   using: "composite"
   steps:
   - id: set-tag
+    name: Calculate directory hash
     shell: bash
     run: |-
-          echo "::set-output name=tag::${GITHUB_REF#refs/heads/}-${GITHUB_SHA}"
-  - name: Build
+        TAG=$(git ls-files -s ${{ inputs.directory }} | git hash-object --stdin)
+        echo "::set-output name=tag::${TAG}"
+  - id: check-remote
+    name: Check repository for TAG ${{ steps.set-tag.outputs.tag }}
     shell: bash
+    env:
+      TAG: ${{ steps.set-tag.outputs.tag }}
+    run: |-
+          EXISTING_TAGS=$(gcloud container images list-tags \
+            --filter="tags:${TAG}" \
+            --format=json gcr.io/${PROJECT_ID}/${{ inputs.image }})
+          if [[ "$EXISTING_TAGS" == "[]" ]]; then
+            echo "::set-output name=tag_exists::0"
+          else
+            echo "::set-output name=tag_exists::1"
+          fi
+  - name: Build
+    if: steps.check-remote.outputs.tag_exists == 0
+    shell: bash
+    env:
+      TAG: ${{ steps.set-tag.outputs.tag }}
     run: |-
           docker build \
-             --tag "gcr.io/${PROJECT_ID}/${{ inputs.image }}:${GITHUB_REF#refs/heads/}-${GITHUB_SHA}" \
+             --tag "gcr.io/${PROJECT_ID}/${{ inputs.image }}:${TAG}" \
              ${{ inputs.directory }}
   - name: Publish
+    if: steps.check-remote.outputs.tag_exists == 0
     shell: bash
-    run: |-
-          docker push "gcr.io/${PROJECT_ID}/${{ inputs.image }}:${GITHUB_REF#refs/heads/}-${GITHUB_SHA}"
+    env:
+      TAG: ${{ steps.set-tag.outputs.tag }}
+    run: docker push "gcr.io/${PROJECT_ID}/${{ inputs.image }}:${TAG}"

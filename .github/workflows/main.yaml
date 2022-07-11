@@ -42,17 +42,20 @@ jobs:
         with:
           image: project-backend
           directory: Project/project-backend
-      - name: Build & Publish Picture
+      - id: build-picture
+        name: Build & Publish Picture
         uses: ./.github/actions/build-publish
         with:
           image: project-picture
           directory: Project/project-picture
-      - name: Build & Publish Frontend
+      - id: build-frontend
+        name: Build & Publish Frontend
         uses: ./.github/actions/build-publish
         with:
           image: project-frontend
           directory: Project/project-frontend
-      - name: Build & Publish Readwiki
+      - id: build-readwiki
+        name: Build & Publish Readwiki
         uses: ./.github/actions/build-publish
         with:
           image: project-readwiki
@@ -71,7 +74,10 @@ jobs:
             popd
       - name: Deploy
         env:
-          TAG: ${{ steps.build-backend.outputs.tag }}
+          BACKEND_TAG: ${{ steps.build-backend.outputs.tag }}
+          PICTURE_TAG: ${{ steps.build-picture.outputs.tag }}
+          FRONTEND_TAG: ${{ steps.build-frontend.outputs.tag }}
+          READWIKI_TAG: ${{ steps.build-readwiki.outputs.tag }}
         run: |-
             kustomize build Project-GKE | envsubst | kubectl apply -f -
             kubectl get deploy --output name | \

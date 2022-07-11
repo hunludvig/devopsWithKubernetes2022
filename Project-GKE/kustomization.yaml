@@ -3,16 +3,16 @@ bases:
 images:
   - name: project-picture
     newName: gcr.io/$PROJECT_ID/project-picture
-    newTag: $TAG
+    newTag: $PICTURE_TAG
   - name: project-backend
     newName: gcr.io/$PROJECT_ID/project-backend
-    newTag: $TAG
+    newTag: $BACKEND_TAG
   - name: project-frontend
     newName: gcr.io/$PROJECT_ID/project-frontend
-    newTag: $TAG
+    newTag: $FRONTEND_TAG
   - name: project-readwiki
     newName: gcr.io/$PROJECT_ID/project-readwiki
-    newTag: $TAG
+    newTag: $READWIKI_TAG
 patches:
  - target:
      kind: PersistentVolumeClaim
