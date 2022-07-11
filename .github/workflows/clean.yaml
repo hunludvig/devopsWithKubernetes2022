@@ -1,0 +1,27 @@
+name: Clean up GKE namespace
+
+on:
+  delete:
+
+env:
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  GKE_CLUSTER: dwk-cluster
+  GKE_ZONE: europe-north1-b
+  DELETED_BRANCH: ${{ github.event.ref }}
+
+jobs:
+  delete-namespace:
+    name: Clean up namespace
+    if: github.event.ref_type == 'branch'
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GKE_PROJECT }}
+          service_account_key: ${{ secrets.GKE_SA_KEY }}
+          export_default_credentials: true
+      - run: gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
+      - name: Delete Namespace
+        run: |-
+            kubectl delete namespace project-${DELETED_BRANCH#refs/heads/}
