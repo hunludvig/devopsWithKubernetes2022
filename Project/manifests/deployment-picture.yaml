@@ -28,3 +28,10 @@ spec:
           volumeMounts:
           - name: pictures-data
             mountPath: /opt/data
+          resources:
+            limits:
+              cpu: 500m
+              memory: 1G
+            requests:
+              cpu: 50m
+              memory: 512M

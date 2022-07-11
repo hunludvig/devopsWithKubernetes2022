@@ -25,3 +25,10 @@ spec:
                 secretKeyRef:
                   name: project-secrets
                   key: POSTGRES_PASSWORD
+          resources:
+            limits:
+              cpu: 500m
+              memory: 1G
+            requests:
+              cpu: 50m
+              memory: 512M
