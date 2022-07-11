@@ -13,3 +13,16 @@ DBaaS vs DIY
 | Control & Special features (DB or environment specific)          |   ❌   |  ✔  |
 | Security in general (maintenance, patch level, monitoring)       |   ✔   |  ❌  |
 | Specific security requirements (legal requirements, confidelity) |   ❌   |  ✔  |
+
+Personal choice
+===============
+In my case (at this point in the course) using Cloud SQL would require
+* additional effort of implementation
+* additional costs of running the cluster (though still well within the initial credits)
+* increase complexity of the CD pipeline
+* sacrifice the strict isolation between namespaces created by CI
+* or lose the flexibility of spinning them up
+> "When you delete an instance, you can't reuse the name of the deleted 
+> instance until one week from the deletion date."
+
+So I've concluded that I stick with the current solution of StatefulSet.
