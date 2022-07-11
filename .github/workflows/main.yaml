@@ -7,7 +7,8 @@ env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GKE_CLUSTER: dwk-cluster
   GKE_ZONE: europe-north1-b
-  NAMESPACE: project
+  NAMESPACE: project-${{ github.ref_name }}
+  DEPLOYMENT_TIMEOUT: 10m
 
 jobs:
   build-publish-deploy:
@@ -58,16 +59,23 @@ jobs:
           directory: Project/project-readwiki
       - run: gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE"
       - name: Create Namespace
-        run: kubectl apply -f Project/manifests/namespace.yaml
+        run: |-
+            kubectl create namespace ${NAMESPACE} || true
+            kubectl config set-context --current --namespace=${NAMESPACE}
       - name: Set up Kustomize
         uses: imranismail/setup-kustomize@v1
+      - name: Update namespace
+        run: |-
+            pushd Project
+              kustomize edit set namespace ${NAMESPACE}
+            popd
       - name: Deploy
         env:
           TAG: ${{ steps.build-backend.outputs.tag }}
         run: |-
             kustomize build Project-GKE | envsubst | kubectl apply -f -
-            kubectl --namespace ${NAMESPACE} get deploy --output name | \
-              timeout 5m \
+            kubectl get deploy --output name | \
+              timeout ${DEPLOYMENT_TIMEOUT} \
               xargs -n1 -t \
-              kubectl  --namespace ${NAMESPACE} rollout status
-            kubectl --namespace ${NAMESPACE} get services -o wide
+              kubectl rollout status
+            kubectl get services -o wide
