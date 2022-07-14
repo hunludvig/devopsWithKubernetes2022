@@ -1,0 +1,26 @@
+bases:
+  - ../Exercises
+images:
+  - name: reader
+    newName: gcr.io/ascendant-ridge-355314/reader
+  - name: writer
+    newName: gcr.io/ascendant-ridge-355314/writer
+  - name: pingpong
+    newName: gcr.io/ascendant-ridge-355314/pingpong
+patches:
+  - target:
+      kind: StatefulSet
+    patch: |-
+       - op: remove
+         path: /spec/volumeClaimTemplates/0/spec/storageClassName
+  - target:
+      kind: Deployment
+    patch: |-
+       - op: remove
+         path: /spec/template/spec/containers/0/imagePullPolicy
+  - target:
+      kind: Deployment
+      name: logoutput
+    patch: |-
+       - op: remove
+         path: /spec/template/spec/containers/1/imagePullPolicy

@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: logoutput
-  namespace: exercises
 spec:
   replicas: 1
   selector:
@@ -36,6 +35,13 @@ spec:
           volumeMounts:
            - name: timestamp-data
              mountPath: /opt/data
+          resources:
+            limits:
+              cpu: 100m
+              memory: 256M
+            requests:
+              cpu: 10m
+              memory: 128M
         - name: reader
           image: reader
           imagePullPolicy: Never
@@ -53,3 +59,10 @@ spec:
              mountPath: /opt/tsdata
            - name: config
              mountPath: /opt/config
+          resources:
+            limits:
+              cpu: 500m
+              memory: 1G
+            requests:
+              cpu: 50m
+              memory: 512M

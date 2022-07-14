@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pingpong
-  namespace: exercises
 spec:
   replicas: 1
   selector:
@@ -15,7 +14,8 @@ spec:
     spec:
       containers:
         - name: pingpong
-          image: gcr.io/ascendant-ridge-355314/pingpong
+          image: pingpong
+          imagePullPolicy: Never
           env:
             - name: DB_URL
               value: jdbc:postgresql://postgres/logoutput
@@ -26,3 +26,10 @@ spec:
                 secretKeyRef:
                   name: exercises-secrets
                   key: POSTGRES_PASSWORD
+          resources:
+            limits:
+              cpu: 500m
+              memory: 1G
+            requests:
+              cpu: 50m
+              memory: 512M
