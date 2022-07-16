@@ -33,3 +33,9 @@ spec:
             requests:
               cpu: 50m
               memory: 512M
+          readinessProbe:
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            httpGet:
+              path: /pongs
+              port: 8080
