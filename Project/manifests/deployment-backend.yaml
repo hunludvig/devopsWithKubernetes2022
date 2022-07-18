@@ -32,3 +32,9 @@ spec:
             requests:
               cpu: 50m
               memory: 512M
+          readinessProbe:
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            httpGet:
+              path: /todos
+              port: 8080
