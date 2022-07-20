@@ -14,7 +14,7 @@ spec:
             imagePullPolicy: Never
             env:
             - name: TODOS
-              value: "http://project-backend-svc/todos"
+              value: "http://backend-svc/todos"
             resources:
               limits:
                 cpu: 250m

@@ -1,12 +1,19 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: backend
 spec:
-  replicas: 1
+  replicas: 4
   selector:
     matchLabels:
       app: project-backend
+  strategy:
+    canary:
+      steps:
+      - setWeight: 50
+      - analysis:
+          templates:
+          - templateName: backend-analysis
   template:
     metadata:
       labels:
@@ -34,6 +41,12 @@ spec:
               memory: 512M
           readinessProbe:
             initialDelaySeconds: 15
+            periodSeconds: 15
+            httpGet:
+              path: /todos
+              port: 8080
+          livenessProbe:
+            initialDelaySeconds: 30
             periodSeconds: 15
             httpGet:
               path: /todos

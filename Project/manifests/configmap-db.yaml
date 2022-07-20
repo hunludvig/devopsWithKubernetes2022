@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: db-config
 data:
-  DB_URL: jdbc:postgresql://project-postgres/project
+  DB_URL: jdbc:postgresql://postgres/project
   DB_USER: postgres

@@ -10,20 +10,20 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: project-picture-svc
+            name: picture-svc
             port:
               number: 80
       - path: /todos
         pathType: Prefix
         backend:
           service:
-            name: project-backend-svc
+            name: backend-svc
             port:
               number: 80
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: project-frontend-svc
+            name: frontend-svc
             port:
               number: 80
