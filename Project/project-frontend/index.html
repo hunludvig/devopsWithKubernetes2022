@@ -11,7 +11,18 @@
                 }
                 for (let todo of todos) {
                     let li = document.createElement("li");
-                    li.appendChild(document.createTextNode(todo.content));
+                    if(todo.status == 'TODO') {
+                        li.appendChild(document.createTextNode(todo.content));
+                        let done = document.createElement("input");
+                        done.setAttribute("type", "button");
+                        done.setAttribute("value", "DONE");
+                        done.setAttribute("onclick", "updateTodo(" + todo.id + ");");
+                        li.appendChild(done);
+                    } else {
+                        let del = document.createElement("del")
+                        del.appendChild(document.createTextNode(todo.content));
+                        li.appendChild(del);
+                    }
                     ul.appendChild(li);
                 }
             }
@@ -29,6 +40,14 @@
                 .then(response => response.json())
                 .then(displayTodos);
                 e.preventDefault();
+                document.getElementById("newTodo").value = "";
+            }
+            function updateTodo(id) {
+                fetch("/todos/" + id, {
+                    method: "PUT",
+                })
+                .then(response => response.json())
+                .then(displayTodos);
             }
             window.onload = () => {
                 loadTodos();
@@ -39,9 +58,9 @@
     <body>
         <img src="/picture" alt="Picture of the day" width="400" height="400"/>
         <form id="addForm">
-            <input type="text" name="content" maxlength="140" />
+            <input id="newTodo" type="text" name="content" maxlength="140"/>
             <input type="submit" value="Create TODO" />
         </form>
-        <ul id="todos" />
+        <ul id="todos"></ul>
     </body>
 </html>

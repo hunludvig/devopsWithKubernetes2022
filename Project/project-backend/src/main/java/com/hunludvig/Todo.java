@@ -21,6 +21,8 @@ public class Todo implements Serializable {
 
     private ZonedDateTime createdAt;
 
+    private Status status = Status.TODO;
+
     public BigInteger getId() {
         return id;
     }
@@ -44,4 +46,14 @@ public class Todo implements Serializable {
     public void setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public enum Status { TODO, DONE }
 }

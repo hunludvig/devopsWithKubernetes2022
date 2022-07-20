@@ -6,11 +6,14 @@ import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.annotation.Produces;
+import io.micronaut.http.annotation.Put;
 import io.micronaut.http.annotation.RequestAttribute;
 import jakarta.inject.Inject;
+import java.math.BigInteger;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.stream.Collectors;
+import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,14 +28,17 @@ public class MainController {
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<TodoDto> fetchTodos() {
         return todos.findAll().stream()
-                .map(t -> new TodoDto(t.getId().longValue(), t.getContent()))
+                .map(t -> new TodoDto(
+                        t.getId().longValue(),
+                        t.getContent(),
+                        t.getStatus().name()))
                 .collect(Collectors.toList());
     }
 
     @Post("todos")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<TodoDto> addTodo(@RequestAttribute("content") final String content)  {
+    public Collection<TodoDto> addTodo(@RequestAttribute("content") final String content) {
         try {
             var todo = new Todo();
             todo.setContent(content);
@@ -44,6 +50,22 @@ public class MainController {
             LOG.error("Failed to add todo of content {}", content, e);
             throw e;
         }
+    }
+
+    @Put("todos/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional
+    public Collection<TodoDto> updateTodo(final BigInteger id) {
+        var todo = todos.findById(id).orElseThrow();
+        switch(todo.getStatus()) {
+            case TODO -> {
+                todo.setStatus(Todo.Status.DONE);
+                todos.save(todo);
+                LOG.info("Todo id {} was updated done", id);
+            }
+            default -> LOG.info("Todo id {} is already done", id);
+        }
+        return fetchTodos();
     }
 
     @Get
