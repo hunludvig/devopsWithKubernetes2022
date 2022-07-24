@@ -24,14 +24,14 @@ public class MainController {
     @Inject
     private TodoRepository todos;
 
+    @Inject
+    private MessagingClient messaging;
+
     @Get("todos")
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<TodoDto> fetchTodos() {
         return todos.findAll().stream()
-                .map(t -> new TodoDto(
-                        t.getId().longValue(),
-                        t.getContent(),
-                        t.getStatus().name()))
+                .map(TodoDto::fromTodo)
                 .collect(Collectors.toList());
     }
 
@@ -44,6 +44,7 @@ public class MainController {
             todo.setContent(content);
             todo.setCreatedAt(ZonedDateTime.now());
             todos.save(todo);
+            messaging.sendAdd(TodoDto.fromTodo(todo));
             LOG.info("Todo added with content {}", content);
             return fetchTodos();
         } catch(RuntimeException e) {
@@ -61,6 +62,7 @@ public class MainController {
             case TODO -> {
                 todo.setStatus(Todo.Status.DONE);
                 todos.save(todo);
+                messaging.sendUpdate(TodoDto.fromTodo(todo));
                 LOG.info("Todo id {} was updated done", id);
             }
             default -> LOG.info("Todo id {} is already done", id);

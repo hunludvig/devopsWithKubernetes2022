@@ -25,6 +25,8 @@ spec:
                 secretKeyRef:
                   name: secrets
                   key: POSTGRES_PASSWORD
+            - name: NATS_URL
+              value: my-nats.default.svc.cluster.local
           resources:
             limits:
               cpu: 500m

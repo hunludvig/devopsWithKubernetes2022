@@ -13,6 +13,12 @@ datasources:
     username: ${DB_USER:postgres}
     password: ${DB_PASSWORD:hello}
     driverClassName:  org.postgresql.Driver
+nats:
+  addresses:
+    - "nats://${NATS_URL:localhost}:${NATS_PORT:4222}"
+messaging:
+  add-todo-subject: add
+  update-todo-subject: update
 jpa:
   default:
     packages-to-scan:

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: broadcaster
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: project-broadcaster
+  template:
+    metadata:
+      labels:
+        app: project-broadcaster
+    spec:
+      containers:
+        - name: project-broadcaster
+          image: project-broadcaster
+          imagePullPolicy: Never
+          env:
+           - name: NATS_URL
+             value: my-nats.default.svc.cluster.local
+           - name: CHAT_URL
+             value: http://frontend-svc/chat-service-endpoint
+           - name: CHAT_API_KEY
+             valueFrom:
+                secretKeyRef:
+                  name: secrets
+                  key: CHAT_SERVICE_API_KEY
+          resources:
+            limits:
+              cpu: 250m
+              memory: 512M
+            requests:
+              cpu: 25m
+              memory: 128M

@@ -1,0 +1,13 @@
+micronaut:
+  application:
+    name: project-broadcaster
+nats:
+  addresses:
+    - "nats://${NATS_URL:localhost}:${NATS_PORT:4222}"
+messaging:
+  add-todo-subject: add
+  update-todo-subject: update
+chat-service:
+  url: ${CHAT_URL}
+  api-key: ${CHAT_API_KEY}
+  source: ${CHAT_SOURCE:broadcaster}

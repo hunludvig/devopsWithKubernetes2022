@@ -7,6 +7,7 @@ resources:
 #  - manifests/deployment-backend.yaml
   - manifests/deployment-frontend.yaml
   - manifests/deployment-picture.yaml
+  - manifests/deployment-broadcaster.yaml
   - manifests/ingress.yaml
   - manifests/persistentvolumeclaim.yaml
   - manifests/secret.yaml
