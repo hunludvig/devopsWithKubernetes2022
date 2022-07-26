@@ -6,9 +6,9 @@ spec:
   metrics:
   - name: ns-cpu-rate
     initialDelay: 2m
-    successCondition: result < 0.05
+    successCondition: result < 0.25
     provider:
       prometheus:
-        address: http://kube-prometheus-stack-1658-prometheus.prometheus.svc.cluster.local:9090
+        address: http://monitoring-prometheus-kube-prometheus.monitoring.svc.cluster.local:9090/prometheus/
         query: |
           scalar(sum(rate(container_cpu_usage_seconds_total{namespace="project"}[8m])))

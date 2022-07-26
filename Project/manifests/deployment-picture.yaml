@@ -21,7 +21,6 @@ spec:
       containers:
         - name: project-picture
           image: project-picture
-          imagePullPolicy: Never
           env:
            - name: PICTURE_CACHE
              value: "/opt/data"

@@ -2,19 +2,34 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: project
 resources:
-  - manifests/configmap-db.yaml
-  - manifests/cronjob-readwiki.yaml
-#  - manifests/deployment-backend.yaml
-  - manifests/deployment-frontend.yaml
-  - manifests/deployment-picture.yaml
-  - manifests/deployment-broadcaster.yaml
-  - manifests/ingress.yaml
-  - manifests/persistentvolumeclaim.yaml
-  - manifests/secret.yaml
-  - manifests/service-backend.yaml
-  - manifests/service-frontend.yaml
-  - manifests/service-picture.yaml
-  - manifests/service-postgres.yaml
-  - manifests/statefulset-postgres.yaml
-  - manifests/rollout-backend.yaml
-  - manifests/analysistemplate-backend.yaml
+- manifests/configmap-db.yaml
+- manifests/cronjob-readwiki.yaml
+- manifests/deployment-frontend.yaml
+- manifests/deployment-picture.yaml
+- manifests/deployment-broadcaster.yaml
+- manifests/ingress.yaml
+- manifests/persistentvolumeclaim.yaml
+- manifests/secret.enc.yaml
+- manifests/service-backend.yaml
+- manifests/service-frontend.yaml
+- manifests/service-picture.yaml
+- manifests/service-postgres.yaml
+- manifests/statefulset-postgres.yaml
+- manifests/rollout-backend.yaml
+- manifests/analysistemplate-backend.yaml
+images:
+- name: project-backend
+  newName: adamatin4mo/project-backend
+  newTag: ef86b34f822e972c9ee5d534476aa90e976b4ca1
+- name: project-broadcaster
+  newName: adamatin4mo/project-broadcaster
+  newTag: ef86b34f822e972c9ee5d534476aa90e976b4ca1
+- name: project-frontend
+  newName: adamatin4mo/project-frontend
+  newTag: ef86b34f822e972c9ee5d534476aa90e976b4ca1
+- name: project-picture
+  newName: adamatin4mo/project-picture
+  newTag: ef86b34f822e972c9ee5d534476aa90e976b4ca1
+- name: project-readwiki
+  newName: adamatin4mo/project-readwiki
+  newTag: ef86b34f822e972c9ee5d534476aa90e976b4ca1

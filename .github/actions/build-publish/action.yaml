@@ -1,51 +1,48 @@
-name: 'build-publish'
-description: 'Builds an image and publishes it to GCR'
+name: 'build-publish-deploy'
+description: 'Builds an image and publishes it to Docker Hub and adjusts deployment file'
+
 inputs:
   image:
-    description: "image name to use"
+    description: "generic image name"
     required: true
-  directory:
-    description: "location of project files"
-    required: true
-outputs:
   tag:
-    description: "Docker image tag"
-    value: ${{ steps.set-tag.outputs.tag }}
+    description: "docker tag to use"
+    required: true
+  docker-context:
+    description: "docker context location"
+    required: true
+  kustomize-context:
+    description: "kustomize context location"
+    required: true
+
 runs:
   using: "composite"
   steps:
-  - id: set-tag
-    name: Calculate directory hash
-    shell: bash
-    run: |-
-        TAG=$(git ls-files -s ${{ inputs.directory }} | git hash-object --stdin)
-        echo "::set-output name=tag::${TAG}"
-  - id: check-remote
-    name: Check repository for TAG ${{ steps.set-tag.outputs.tag }}
-    shell: bash
-    env:
-      TAG: ${{ steps.set-tag.outputs.tag }}
-    run: |-
-          EXISTING_TAGS=$(gcloud container images list-tags \
-            --filter="tags:${TAG}" \
-            --format=json gcr.io/${PROJECT_ID}/${{ inputs.image }})
-          if [[ "$EXISTING_TAGS" == "[]" ]]; then
-            echo "::set-output name=tag_exists::0"
-          else
-            echo "::set-output name=tag_exists::1"
-          fi
-  - name: Build
-    if: steps.check-remote.outputs.tag_exists == 0
-    shell: bash
-    env:
-      TAG: ${{ steps.set-tag.outputs.tag }}
-    run: |-
-          docker build \
-             --tag "gcr.io/${PROJECT_ID}/${{ inputs.image }}:${TAG}" \
-             ${{ inputs.directory }}
-  - name: Publish
-    if: steps.check-remote.outputs.tag_exists == 0
-    shell: bash
-    env:
-      TAG: ${{ steps.set-tag.outputs.tag }}
-    run: docker push "gcr.io/${PROJECT_ID}/${{ inputs.image }}:${TAG}"
+   - name: Login to Docker Hub
+     uses: docker/login-action@v1
+     with:
+       username: ${{ env.DOCKER_USERNAME }}
+       password: ${{ env.DOCKER_PASSWORD }}
+   - name: Build and Push
+     uses: docker/build-push-action@v2
+     with:
+       context: ${{ inputs.docker-context }}
+       push: true
+       tags: ${{ inputs.tag }}
+   - name: Set up Kustomize
+     uses: imranismail/setup-kustomize@v1
+   - name: Pull latest changes
+     shell: bash
+     run: git pull
+   - name: Update deployment
+     working-directory: ${{ inputs.kustomize-context }}
+     shell: bash
+     run: |-
+         kustomize edit set image ${{ inputs.image }}=${{ inputs.tag }}
+   - uses: EndBug/add-and-commit@v9
+     with:
+       add: '${{ inputs.kustomize-context }}/kustomization.yaml'
+       message: New version release ${{ inputs.tag }}
+       pull: '--rebase --autostash'
+     env:
+       GITHUB_TOKEN: ${{ github.token }}

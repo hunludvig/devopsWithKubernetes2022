@@ -1,0 +1,26 @@
+name: Build Project Backend
+
+on:
+  push:
+    paths:
+      - 'Project/project-backend/**'
+      - '.github/workflows/build-project-backend.yaml'
+      - '.github/actions/build-publish/action.yaml'
+
+jobs:
+  build-publish:
+    name: Build and Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build, publish and adjust deployment files
+        uses: ./.github/actions/build-publish
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        with:
+          image: project-backend
+          tag: ${{ secrets.DOCKER_USERNAME }}/project-backend:${{ github.sha }}
+          docker-context: Project/project-backend
+          kustomize-context: Project

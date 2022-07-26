@@ -22,7 +22,6 @@ spec:
       containers:
         - name: project-backend
           image: project-backend
-          imagePullPolicy: Never
           envFrom:
             - configMapRef:
                 name: db-config
@@ -33,7 +32,7 @@ spec:
                   name: secrets
                   key: POSTGRES_PASSWORD
             - name: NATS_URL
-              value: my-nats.default.svc.cluster.local
+              value: messaging-my-nats.messaging.svc.cluster.local
           resources:
             limits:
               cpu: 500m

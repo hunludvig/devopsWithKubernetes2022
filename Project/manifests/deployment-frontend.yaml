@@ -15,7 +15,6 @@ spec:
       containers:
         - name: project-frontend
           image: project-frontend
-          imagePullPolicy: Never
           resources:
             limits:
               cpu: 200m

@@ -1,0 +1,26 @@
+name: Build Project Broadcaster
+
+on:
+  push:
+    paths:
+      - 'Project/project-broadcaster/**'
+      - '.github/workflows/build-project-broadcaster.yaml'
+      - '.github/actions/build-publish/action.yaml'
+
+jobs:
+  build-publish:
+    name: Build and Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build, publish and adjust deployment files
+        uses: ./.github/actions/build-publish
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        with:
+          image: project-broadcaster
+          tag: ${{ secrets.DOCKER_USERNAME }}/project-broadcaster:${{ github.sha }}
+          docker-context: Project/project-broadcaster
+          kustomize-context: Project

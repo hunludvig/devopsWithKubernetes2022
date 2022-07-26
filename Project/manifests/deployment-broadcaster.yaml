@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: broadcaster
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: project-broadcaster
@@ -15,10 +15,9 @@ spec:
       containers:
         - name: project-broadcaster
           image: project-broadcaster
-          imagePullPolicy: Never
           env:
            - name: NATS_URL
-             value: my-nats.default.svc.cluster.local
+             value: messaging-my-nats.messaging.svc.cluster.local
            - name: CHAT_URL
              value: http://frontend-svc/chat-service-endpoint
            - name: CHAT_API_KEY
