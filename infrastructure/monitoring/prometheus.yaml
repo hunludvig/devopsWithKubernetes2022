@@ -1,0 +1,36 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: prometheus
+  namespace: flux-system
+spec:
+  interval: 1h
+  targetNamespace: monitoring
+  install:
+    createNamespace: true
+  chart:
+    spec:
+      chart: kube-prometheus-stack
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community
+        namespace: flux-system
+      interval: 1h
+  values:
+    prometheus:
+      ingress:
+        enabled: true
+        paths:
+         - /prometheus
+      prometheusSpec:
+        routePrefix: /prometheus
+        externalUrl: /prometheus
+    grafana:
+      env:
+        GF_SERVER_ROOT_URL: /grafana
+        GF_SERVER_SERVE_FROM_SUB_PATH: 'true'
+      ingress:
+        enabled: true
+        path: /grafana
+      dashboardsConfigMaps:
+        default: messaging-dashboard
