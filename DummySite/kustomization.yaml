@@ -10,4 +10,4 @@ resources:
 images:
 - name: dummysites-controller
   newName: adamatin4mo/dummysites-controller
-  newTag: WIP
+  newTag: a98a763ceb5c83b280ec267bd632bfeb205a62be
