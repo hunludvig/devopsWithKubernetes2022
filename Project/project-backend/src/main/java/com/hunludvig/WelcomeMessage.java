@@ -14,7 +14,6 @@ public class WelcomeMessage {
     @Value("${micronaut.server.port}")
     private Integer port;
 
-    
     @EventListener
     public void printMessage(ServerStartupEvent event) {
         LOG.info("Server started in port {}", port);

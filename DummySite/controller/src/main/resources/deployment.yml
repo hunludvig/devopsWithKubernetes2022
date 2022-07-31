@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "[[${name}]]"
+  namespace: "[[${namespace}]]"
+  labels:
+    dummySite: "[[${label}]]"
+    app: dummysites
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      dummySite: "[[${label}]]"
+  template:
+    metadata:
+      labels:
+        dummySite: "[[${label}]]"
+    spec:
+      volumes:
+        - name: content
+      initContainers:
+        - name: scraper
+          image: curlimages/curl:latest
+          command: ["curl", "[[${website_url}]]", "-o", "/home/curl_user/content/index.html"]
+          volumeMounts:
+            - name: content
+              mountPath: /home/curl_user/content
+              subPath: "[[${path}]]"
+          resources:
+            limits:
+              cpu: 250m
+              memory: 64M
+            requests:
+              cpu: 50m
+              memory: 32M
+      containers:
+        - name: server
+          image: nginx:alpine
+          volumeMounts:
+            - name: content
+              mountPath: /usr/share/nginx/html/
+          resources:
+            limits:
+              cpu: 250m
+              memory: 64M
+            requests:
+              cpu: 50m
+              memory: 32M

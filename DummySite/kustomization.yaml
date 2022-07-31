@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: dummysites
+resources:
+- manifests/crd.yaml
+- manifests/clusterrole.yaml
+- manifests/serviceaccount.yaml
+- manifests/clusterrolebinding.yaml
+- manifests/deployment-controller.yaml
+images:
+- name: dummysites-controller
+  newName: adamatin4mo/dummysites-controller
+  newTag: WIP

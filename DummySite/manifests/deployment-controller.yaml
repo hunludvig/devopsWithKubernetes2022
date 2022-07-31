@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dummysites-controller-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dummysites-controller
+  template:
+    metadata:
+      labels:
+        app: dummysites-controller
+    spec:
+      serviceAccountName: dummysites-controller-account
+      containers:
+        - name: dummysites-controller
+          image: dummysites-controller
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256M
+            requests:
+              cpu: 50m
+              memory: 32M
