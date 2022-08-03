@@ -20,7 +20,7 @@ resources:
 images:
 - name: project-backend
   newName: adamatin4mo/project-backend
-  newTag: a98a763ceb5c83b280ec267bd632bfeb205a62be
+  newTag: 15298a469eaff6597633b3cca61159bca02c94e2
 - name: project-broadcaster
   newName: adamatin4mo/project-broadcaster
   newTag: 15298a469eaff6597633b3cca61159bca02c94e2
