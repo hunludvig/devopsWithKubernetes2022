@@ -23,7 +23,7 @@ images:
   newTag: a98a763ceb5c83b280ec267bd632bfeb205a62be
 - name: project-broadcaster
   newName: adamatin4mo/project-broadcaster
-  newTag: 7448dd7653cdbd5b1550088e22a30a4b333dddb0
+  newTag: 15298a469eaff6597633b3cca61159bca02c94e2
 - name: project-frontend
   newName: adamatin4mo/project-frontend
   newTag: 15298a469eaff6597633b3cca61159bca02c94e2
