@@ -4,3 +4,5 @@ metadata:
   name: project
   labels:
     name: project
+  annotations:
+    linkerd.io/inject: enabled

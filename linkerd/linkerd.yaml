@@ -1,0 +1,31 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: linkerd
+  namespace: flux-system
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: linkerd2
+      sourceRef:
+        kind: HelmRepository
+        name: linkerd
+        namespace: flux-system
+      interval: 1h
+  valuesFrom:
+  - kind: Secret
+    name: linkerd-certs
+    valuesKey: trust-anchor
+    targetPath: identityTrustAnchorsPEM
+  - kind: Secret
+    name: linkerd-certs
+    valuesKey: issuer-crt
+    targetPath: identity.issuer.tls.crtPEM
+  - kind: Secret
+    name: linkerd-certs
+    valuesKey: issuer-key
+    targetPath: identity.issuer.tls.keyPEM
+  values:
+    proxy:
+      opaquePorts: "25,587,3306,4444,5432,6379,9300,11211,4222,6222,8222,7422,7522"

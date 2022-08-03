@@ -32,5 +32,3 @@ spec:
       ingress:
         enabled: true
         path: /grafana
-      dashboardsConfigMaps:
-        default: messaging-dashboard
