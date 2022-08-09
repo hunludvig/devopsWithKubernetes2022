@@ -1,0 +1,21 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: pingpong
+spec:
+  template:
+    metadata:
+      name: pingpong-service-v3
+    spec:
+      containers:
+        - image: adamatin4mo/pingpong:latest
+          env:
+            - name: DB_URL
+              value: jdbc:postgresql://postgres/logoutput
+            - name: DB_USER
+              value: postgres
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: exercises-secrets
+                  key: POSTGRES_PASSWORD

@@ -1,0 +1,14 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: knative-contour
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  dependsOn:
+    - name: knative-core
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./knative/contour
+  prune: true

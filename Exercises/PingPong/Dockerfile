@@ -1,15 +1,20 @@
 FROM maven:3-amazoncorretto-17 as builder
 
+COPY pom.xml /usr/src/app/pom.xml
+RUN mvn -f /usr/src/app/pom.xml dependency:go-offline --batch-mode
+
 COPY src /usr/src/app/src
-COPY pom.xml /usr/src/app
+RUN mvn -f /usr/src/app/pom.xml package -DskipTests
 
-RUN mvn -f /usr/src/app/pom.xml clean package -DskipTests
+FROM ghcr.io/graalvm/native-image:22.1.0 as graalvm
 
-FROM amazoncorretto:17
+COPY --from=builder /usr/src/app/target/PingPong-*.jar /app/PingPong.jar
 
-COPY --from=builder /usr/src/app/target/PingPong-*.jar /usr/app/PingPong.jar
+RUN native-image --no-fallback -jar /app/PingPong.jar
 
-ARG PORT=8080
-ENV PORT=${PORT}
+FROM alpine:latest
+RUN apk add gcompat
 
-ENTRYPOINT ["java", "-cp", "/usr/app/PingPong.jar", "com.hunludvig.Application"]
+COPY --from=graalvm /app/PingPong /app/PingPong
+
+ENTRYPOINT ["/app/PingPong"]

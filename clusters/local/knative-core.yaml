@@ -1,0 +1,23 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: knative-core
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  dependsOn:
+    - name: knative-crds
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./knative/core
+  prune: true
+  patches:
+  - target:
+      kind: ConfigMap
+      labelSelector: config-network
+    patch: |-
+      - op: add
+        path: /data/ingress-class
+        value: contour.ingress.networking.knative.dev
+
