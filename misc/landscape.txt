@@ -1,0 +1,79 @@
+- I've used MariaDB outside of this course.
+- I've used Microsoft SQL Server outside of this course.
+- I've used MySQL outside of this course.
+- I've used Oracle outside of this course.
+- I've used OrientDB outside of this course.
+- I've used Percona outside of this course.
+- I've used PostgreSQL from Part 2 on and also outside of this course.
+
+- I've used NATS from Part 4 on during this course.
+- I've used Apache Spark outside of this course.
+- I've used RabbitMQ outside of this course.
+
+- I've used Helm from Part 2 on and also outside of this course.
+- I've used Buildpacks.io outside of this course.
+- I've used Docker Compose outside of this course.
+- I've used Gradle outside of this course.
+- I've used Kaniko outside of this course.
+- I've used OpenAPI outside of this course.
+
+- I've used argo from Part 4 on during this course.
+- I've used flux from Part 4 on during this course.
+- I've used GitHub Actions from Part 3 on during this course.
+- I've used GitLab outside of this course.
+- I've used Jenkins outside of this course.
+
+- I've used Kubernetes during this course and also outside of it.
+
+- I've used etcd indirectly as part of k8s distribution.
+- I've used CoreDNS indirectly as part of k8s distribution.
+
+- I've used Contour in Part 5 of this course.
+- I've used F5 outside of this course.
+- I've used NGINX indirectly as part of k8s distribution and directly since Part 2 of this course.
+- I've used traefik indirectly as part of k8s distribution.
+
+- I've used Linkerd in Part 5 of this course.
+
+- I've used containerd indirectly as part of k8s distribution.
+
+- I've used Ansible outside of this course.
+
+- I've used Google Container Registry in Part 3 of this course.
+- I've used Artifactory outside of this course.
+
+- I've used Nexus outside of this course.
+
+- I've used HashiCorp Vault outside of this course.
+
+- I've received training from VMware outside of this course.
+
+- I've used AWS outside of this course.
+- I've used K3S indirectly as part of k8s distribution.
+- I've used VMware Tanzu outside of this course.
+
+- I've used AWS Services outside of this course.
+
+- I've used Akka outside of this course.
+- I've used Heroku outside of this course.
+
+- I've used Prometheus since Part 2 of this course and also ouside of it.
+- I've used Amazon CloudWatch outside of this course.
+- I've used Grafana since Part 2 of this course and also ouside of it.
+- I've used Icinga outside of this course.
+- I've used Wavefront outside of this course.
+- I've used Zabbix outside of this course.
+
+- I've used Elastic Stack outside of this course.
+- I've used Grafana Loki in Part 2 of this course.
+- I've used Graylog outside of this course.
+
+- I've used Knative in Part 5 of this course.
+- I've used Apache Camel outside of this course.
+
+- I've used Selenium outside of this course.
+
+- I've used Liquibase outside of this course.
+
+- I've used Artifactory outside of this course.
+- I've used Nexus outside of this course.
