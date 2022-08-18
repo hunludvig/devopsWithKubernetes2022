@@ -3,3 +3,4 @@ tmp
 # ignore secrets, only encrypted secrets are committed
 **/secret*.yaml
 !**/secret*.enc.yaml
+/misc/Forklift/target/

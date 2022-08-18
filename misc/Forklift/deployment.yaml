@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: forklift
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: forklift
+  template:
+    metadata:
+      labels:
+        app: forklift
+    spec:
+      containers:
+        - name: forklift
+          image: forklift
+          imagePullPolicy: Never
+          ports:
+           - containerPort: 8080
+          env:
+           - name: THREADS
+             value: "50"
